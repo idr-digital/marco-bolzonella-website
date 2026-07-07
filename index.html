@@ -1,0 +1,899 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Marco Bolzonella — PhD Student in Statistics, KU Leuven</title>
+<meta name="description" content="Marco Bolzonella, PhD student in Statistics at KU Leuven. Research on directional data, likelihood-based inference and asymptotic theory.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><circle cx=%2250%22 cy=%2250%22 r=%2244%22 fill=%22none%22 stroke=%22%23334466%22 stroke-width=%228%22/><circle cx=%2250%22 cy=%226%22 r=%228%22 fill=%22%23334466%22/></svg>">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --ink:#232b3d;
+    --paper:#ffffff;
+    --paper-soft:#f6f6f6;
+    --paper-line:#e2e2e2;
+    --grey-light:#e4e6ea;
+    --white:#ffffff;
+    --navy:#334466;
+    --navy-deep:#232e47;
+    --navy-soft:#55688f;
+    --azure:#6e96bf;
+    --azure-light:#c7dced;
+    --paper-text:#3a3a34;
+    --on-navy:#ece7db;
+    --on-navy-dim:#a9b0c4;
+
+    --font-display:'Montserrat', sans-serif;
+    --font-body:'Poppins', sans-serif;
+    --font-mono:'Poppins', sans-serif;
+
+    --maxw:1120px;
+  }
+
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--paper-text);
+    font-family:var(--font-body);
+    font-size:16px;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  img{max-width:100%;display:block;}
+  a{color:inherit;}
+
+  ::selection{background:var(--azure);color:var(--navy-deep);}
+
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 32px;}
+
+  /* ---------- NAV ---------- */
+  header.site-nav{
+    position:fixed;top:0;left:0;right:0;z-index:100;
+    background:rgba(255,255,255,0.86);
+    -webkit-backdrop-filter:blur(10px);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--paper-line);
+    transition:transform .4s ease;
+  }
+  .site-nav .wrap{
+    display:flex;align-items:center;justify-content:space-between;
+    height:64px;
+  }
+  .brand{
+    font-family:var(--font-mono);
+    font-size:14px;
+    letter-spacing:.04em;
+    display:flex;align-items:center;gap:8px;
+    text-decoration:none;color:var(--ink);
+  }
+  .brand svg{width:20px;height:20px;flex:none;}
+  nav.links{display:flex;gap:28px;}
+  nav.links a{
+    font-family:var(--font-mono);
+    font-size:12.5px;
+    letter-spacing:.06em;
+    text-transform:uppercase;
+    text-decoration:none;
+    color:var(--paper-text);
+    opacity:.65;
+    position:relative;
+    padding:4px 0;
+    transition:opacity .2s ease;
+  }
+  nav.links a:hover, nav.links a.active{opacity:1;}
+  nav.links a.active{color:var(--azure);}
+  .nav-toggle{display:none;}
+
+  @media (max-width:820px){
+    nav.links{
+      position:fixed;top:64px;left:0;right:0;
+      background:var(--paper);
+      border-bottom:1px solid var(--paper-line);
+      flex-direction:column;gap:0;
+      max-height:0;overflow:hidden;
+      transition:max-height .3s ease;
+    }
+    nav.links.open{max-height:400px;}
+    nav.links a{padding:14px 32px;width:100%;}
+    .nav-toggle{
+      display:flex;align-items:center;justify-content:center;
+      width:44px;height:44px;
+      background:none;border:none;cursor:pointer;
+      font-family:var(--font-mono);font-size:20px;color:var(--ink);
+      padding:0;
+    }
+  }
+
+  /* ---------- SECTION LABELS (compass eyebrows) ---------- */
+  .eyebrow{
+    font-family:var(--font-mono);
+    font-size:12.5px;
+    letter-spacing:.12em;
+    text-transform:uppercase;
+    display:flex;align-items:center;gap:10px;
+    margin-bottom:22px;
+  }
+  .eyebrow .deg{color:var(--azure);font-weight:500;}
+  .eyebrow .rule{flex:1;height:1px;background:currentColor;opacity:.2;}
+  .on-navy .eyebrow{color:var(--on-navy-dim);}
+  .on-paper .eyebrow{color:var(--paper-text);opacity:.75;}
+
+  [id]{scroll-margin-top:84px;}
+  section{padding:120px 0;position:relative;}
+  @media (max-width:820px){ section{padding:84px 0;} }
+
+  h1,h2,h3{font-family:var(--font-display);font-weight:500;margin:0;}
+
+  .section-title{
+    font-size:clamp(28px,4vw,42px);
+    margin-bottom:44px;
+    max-width:640px;
+    letter-spacing:-.01em;
+  }
+
+  /* reveal-on-scroll */
+  /* di default il contenuto è visibile e statico: l'animazione è un miglioramento, non un requisito */
+  .reveal{opacity:1;transform:none;}
+  html.js .reveal{opacity:0;transform:translateY(18px);transition:opacity .7s ease, transform .7s ease;}
+  html.js .reveal.in{opacity:1;transform:translateY(0);}
+
+  /* ---------- HERO ---------- */
+  .hero{
+    background:var(--navy-deep);
+    color:var(--on-navy);
+    padding:180px 0 100px;
+    overflow:hidden;
+    position:relative;
+  }
+  .hero .wrap{
+    max-width:var(--maxw);
+    display:grid;
+    grid-template-columns:1.15fr .85fr;
+    align-items:center;
+    gap:40px;
+  }
+  @media (max-width:900px){
+    .hero{padding:150px 0 70px;}
+    .hero .wrap{grid-template-columns:1fr;}
+    .hero .compass-wrap{display:none;}
+  }
+  @media (max-width:600px){
+    .hero{padding:120px 0 50px;}
+  }
+  .hero-eyebrow{
+    font-family:var(--font-mono);
+    font-size:13px;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--azure);
+    margin-bottom:22px;
+    display:flex;align-items:center;gap:10px;
+  }
+  .hero-eyebrow::before{
+    content:"";width:8px;height:8px;border-radius:50%;
+    background:var(--azure);flex:none;
+  }
+  .hero h1{
+    font-size:clamp(42px,7vw,74px);
+    line-height:1.02;
+    letter-spacing:-.01em;
+    color:#fff;
+  }
+  .hero h1 em{
+    font-style:italic;
+    color:var(--on-navy-dim);
+    font-weight:400;
+  }
+  .hero p.lede{
+    font-size:18px;
+    max-width:52ch;
+    color:var(--on-navy-dim);
+    margin:26px 0 36px;
+  }
+  .hero .cta-row{display:flex;gap:14px;flex-wrap:wrap;}
+  .btn{
+    font-family:var(--font-mono);
+    font-size:13px;
+    letter-spacing:.04em;
+    text-decoration:none;
+    padding:13px 22px;
+    border-radius:2px;
+    display:inline-flex;align-items:center;gap:8px;
+    transition:transform .25s ease, background .25s ease, color .25s ease;
+    border:1px solid transparent;
+  }
+  .btn-primary{background:var(--white);color:var(--navy-deep);}
+  .btn-primary:hover{transform:translateY(-2px);background:var(--azure-light);}
+  .btn-ghost{border-color:rgba(236,231,219,.3);color:var(--on-navy);}
+  .btn-ghost:hover{border-color:var(--azure);color:var(--azure);transform:translateY(-2px);}
+
+  .compass-wrap{
+    position:relative;
+    display:flex;align-items:center;justify-content:center;
+    aspect-ratio:1/1;
+  }
+  .compass-wrap svg{width:100%;height:100%;max-width:380px;}
+  .compass-wrap .sph-line{
+    fill:none;stroke:rgba(236,231,219,.22);stroke-width:1;
+  }
+  .compass-wrap .sph-line.strong{stroke:rgba(110,150,191,.6);stroke-width:1.3;}
+  .compass-wrap .sph-outline{fill:none;stroke:#fff;stroke-width:1.4;opacity:.9;}
+  .compass-wrap .sph-spin{transform-origin:210px 210px;}
+  html.js .compass-wrap .sph-spin{
+    animation:sphere-rotate 60s linear infinite;
+  }
+  @keyframes sphere-rotate{
+    from{transform:rotate(0deg);}
+    to{transform:rotate(360deg);}
+  }
+  @media (prefers-reduced-motion: reduce){
+    .compass-wrap .sph-spin{animation:none;}
+  }
+
+  /* ---------- ABOUT ---------- */
+  .about .wrap{
+    display:grid;grid-template-columns:.9fr 1.4fr;gap:60px;
+  }
+  @media (max-width:820px){ .about .wrap{grid-template-columns:1fr;gap:30px;} }
+  .about-photo{
+    position:relative;
+  }
+  .about-photo img{
+    border-radius:50%;
+    width:100%;
+    max-width:280px;
+    aspect-ratio:1/1;
+    object-fit:cover;
+    background:var(--paper-soft);
+    filter:grayscale(.15) sepia(.08);
+    border:1px solid var(--paper-line);
+  }
+  .about-photo .ring{
+    position:absolute;
+    top:-14px;left:-14px;right:auto;bottom:auto;
+    width:calc(100% + 28px); max-width:308px;
+    aspect-ratio:1/1;
+    border:1px dashed rgba(110,150,191,.55);
+    border-radius:50%;
+    pointer-events:none;
+  }
+  .about-caption{
+    font-family:var(--font-mono);
+    font-size:12.5px;
+    color:var(--azure);
+    margin-top:18px;
+    max-width:280px;
+  }
+  .about-body p{font-size:17px;max-width:60ch;margin:0 0 18px;}
+  .about-body p:last-child{margin-bottom:0;}
+  .fact-strip{
+    display:flex;flex-wrap:wrap;gap:28px;
+    margin-top:36px;
+    padding-top:28px;
+    border-top:1px solid var(--paper-line);
+  }
+  .fact{min-width:140px;}
+  .fact .num{
+    font-family:var(--font-display);
+    font-size:26px;
+    color:var(--navy);
+  }
+  .fact .lbl{
+    font-family:var(--font-mono);
+    font-size:11.5px;
+    letter-spacing:.05em;
+    text-transform:uppercase;
+    color:var(--paper-text);opacity:.65;
+    margin-top:2px;
+  }
+
+  /* ---------- RESEARCH (PhD highlight) ---------- */
+  .research{
+    background:var(--navy);
+    color:var(--on-navy);
+  }
+  .research-grid{
+    display:grid;
+    grid-template-columns:1.3fr .7fr;
+    gap:50px;
+  }
+  @media (max-width:900px){ .research-grid{grid-template-columns:1fr;} }
+  .research-title{
+    font-size:clamp(26px,4vw,38px);
+    line-height:1.15;
+    color:#fff;
+    max-width:16ch;
+    margin-bottom:22px;
+  }
+  .research-desc{color:var(--on-navy-dim);font-size:16.5px;max-width:56ch;}
+  .research-meta{
+    display:grid;gap:22px;
+    align-content:start;
+  }
+  .meta-item{
+    border-top:1px solid rgba(236,231,219,.18);
+    padding-top:14px;
+  }
+  .meta-item .k{
+    font-family:var(--font-mono);
+    font-size:11px;letter-spacing:.08em;text-transform:uppercase;
+    color:var(--azure);
+  }
+  .meta-item .v{margin-top:6px;font-size:15.5px;color:#fff;}
+  .meta-item .v small{display:block;color:var(--on-navy-dim);font-size:13px;margin-top:2px;font-family:var(--font-mono);}
+
+  /* ---------- EXPERIENCE (timeline) ---------- */
+  .timeline{
+    position:relative;
+    padding-left:32px;
+    border-left:1px solid var(--paper-line);
+  }
+  .tl-item{
+    position:relative;
+    padding-bottom:56px;
+  }
+  .tl-item:last-child{padding-bottom:0;}
+  .tl-item::before{
+    content:"";
+    position:absolute;
+    left:-37px; top:4px;
+    width:11px;height:11px;
+    border-radius:50%;
+    background:var(--paper);
+    border:2px solid var(--azure);
+  }
+  .tl-item.current::before{
+    background:var(--azure);border-color:var(--azure);
+    box-shadow:0 0 0 4px rgba(110,150,191,.22);
+  }
+  .tl-date{
+    font-family:var(--font-mono);
+    font-size:12.5px;
+    letter-spacing:.04em;
+    color:var(--azure);
+    text-transform:uppercase;
+    margin-bottom:6px;
+  }
+  .tl-item.current .tl-date{color:var(--azure);}
+  .tl-role{
+    font-family:var(--font-display);
+    font-size:22px;
+    margin-bottom:2px;
+    color:var(--ink);
+  }
+  .tl-org{
+    font-size:14.5px;
+    color:var(--paper-text);
+    opacity:.75;
+    margin-bottom:14px;
+  }
+  .tl-desc{max-width:62ch;font-size:15.5px;}
+  .tl-desc ul{margin:10px 0 0;padding-left:18px;}
+  .tl-desc li{margin-bottom:4px;}
+
+  /* ---------- EDUCATION ---------- */
+  .edu-grid{display:grid;gap:0;}
+  .edu-item{
+    display:grid;
+    grid-template-columns:170px 1fr;
+    gap:24px;
+    padding:26px 0;
+    border-top:1px solid var(--paper-line);
+  }
+  .edu-item:last-child{border-bottom:1px solid var(--paper-line);}
+  @media (max-width:640px){
+    .edu-item{grid-template-columns:1fr;gap:6px;}
+  }
+  .edu-date{
+    font-family:var(--font-mono);
+    font-size:12.5px;
+    color:var(--azure);
+    letter-spacing:.03em;
+  }
+  .edu-title{font-family:var(--font-display);font-size:19px;color:var(--ink);}
+  .edu-org{font-size:14.5px;opacity:.8;margin-top:2px;}
+  .edu-modules{
+    font-size:13.5px;opacity:.65;margin-top:8px;
+    font-family:var(--font-mono);
+  }
+
+  /* ---------- SKILLS ---------- */
+  .skills-grid{
+    display:grid;grid-template-columns:1fr 1fr;gap:60px;
+  }
+  @media (max-width:720px){ .skills-grid{grid-template-columns:1fr;gap:40px;} }
+  .skills-col .eyebrow{margin-bottom:20px;}
+  .tag-list{display:flex;flex-wrap:wrap;gap:10px;}
+  .tag{
+    font-family:var(--font-mono);
+    font-size:13px;
+    padding:9px 14px;
+    border:1px solid var(--grey-light);
+    border-radius:2px;
+    background:var(--grey-light);
+    color:var(--paper-text);
+  }
+  .lang-row{display:flex;gap:36px;margin-top:56px;padding-top:30px;border-top:1px solid var(--paper-line);}
+  .lang-item .l-name{font-family:var(--font-display);font-size:18px;}
+  .lang-item .l-level{font-family:var(--font-mono);font-size:12px;color:var(--azure);text-transform:uppercase;letter-spacing:.05em;}
+
+  /* ---------- PUBLICATIONS ---------- */
+  .pub-card{
+    border:1px solid var(--paper-line);
+    background:var(--paper-soft);
+    padding:32px;
+    border-radius:2px;
+    max-width:760px;
+  }
+  .pub-authors{font-size:15px;margin-bottom:6px;}
+  .pub-title{font-family:var(--font-display);font-size:20px;margin-bottom:10px;color:var(--ink);}
+  .pub-journal{font-size:14.5px;opacity:.75;font-style:italic;margin-bottom:14px;}
+  .pub-doi{
+    font-family:var(--font-mono);font-size:13px;color:var(--azure);
+    text-decoration:none;border-bottom:1px solid rgba(110,150,191,.45);
+    padding-bottom:2px;
+  }
+  .pub-doi:hover{color:var(--navy);}
+
+  /* ---------- REFERENCES ---------- */
+  .ref-grid{display:grid;grid-template-columns:1fr 1fr;gap:32px;}
+  @media (max-width:640px){ .ref-grid{grid-template-columns:1fr;} }
+  .ref-card{padding:24px 0;border-top:1px solid var(--paper-line);}
+  .ref-name{font-family:var(--font-display);font-size:19px;}
+  .ref-role{font-size:14px;opacity:.75;margin-top:4px;}
+  .ref-note{
+    font-family:var(--font-mono);font-size:12px;opacity:.55;margin-top:10px;
+  }
+
+  /* ---------- CV ---------- */
+  .cv-card{
+    display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:24px;
+    border:1px solid var(--paper-line);
+    background:var(--paper-soft);
+    padding:32px;
+    border-radius:2px;
+    max-width:760px;
+  }
+  .cv-card-title{font-family:var(--font-display);font-size:20px;color:var(--ink);margin-bottom:8px;}
+  .cv-card-desc{font-size:14.5px;opacity:.75;max-width:44ch;}
+  .btn-outline{
+    border:1px solid var(--navy);color:var(--navy);background:transparent;
+  }
+  .btn-outline:hover{background:var(--navy);color:var(--white);transform:translateY(-2px);}
+
+  /* ---------- CONTACT / FOOTER ---------- */
+  footer.contact{
+    background:var(--navy-deep);
+    color:var(--on-navy);
+  }
+  .contact-inner{
+    display:grid;grid-template-columns:1.2fr .8fr;gap:50px;align-items:end;
+  }
+  .contact-inner > div{min-width:0;}
+  @media (max-width:820px){ .contact-inner{grid-template-columns:1fr;} }
+  .contact h2{
+    font-size:clamp(32px,5.5vw,56px);color:#fff;line-height:1.05;letter-spacing:-.01em;
+  }
+  .contact-links{display:grid;gap:16px;margin-top:34px;}
+  .contact-links a{
+    display:flex;align-items:baseline;gap:14px;
+    text-decoration:none;
+    font-size:17px;color:var(--on-navy);
+    border-bottom:1px solid rgba(236,231,219,.15);
+    padding-bottom:14px;
+    transition:color .2s ease, padding-left .2s ease;
+    min-width:0;
+  }
+  .contact-links a:hover{color:var(--azure);padding-left:6px;}
+  .contact-links .v{
+    min-width:0;flex:1;overflow-wrap:anywhere;word-break:break-word;
+  }
+  .contact-links .k{
+    font-family:var(--font-mono);font-size:11.5px;letter-spacing:.06em;
+    text-transform:uppercase;color:var(--on-navy-dim);min-width:80px;
+  }
+  .contact-meta{
+    font-family:var(--font-mono);
+    font-size:13.5px;
+    color:var(--on-navy-dim);
+    line-height:2;
+  }
+  .foot-bottom{
+    margin-top:90px;
+    padding-top:26px;
+    border-top:1px solid rgba(236,231,219,.14);
+    display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;
+    font-family:var(--font-mono);
+    font-size:12px;
+    color:var(--on-navy-dim);
+  }
+
+  /* small utility */
+  .mono{font-family:var(--font-mono);}
+  .center-note{
+    text-align:center;font-family:var(--font-mono);font-size:12.5px;
+    color:var(--paper-text);opacity:.5;margin-top:60px;
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto;}
+    .reveal{transition:none;opacity:1;transform:none;}
+    .rotating{animation:none !important;}
+    .sample-point{animation:none !important;opacity:1 !important;}
+  }
+
+  .rotating{
+    animation:spin 90s linear infinite;
+    transform-origin:center;
+  }
+  @keyframes spin{ to{ transform:rotate(360deg); } }
+
+  /* sample points "drawn" one by one when the compass scrolls into view (solo se il JS parte) */
+  .sample-point{opacity:1;}
+  html.js .sample-point{
+    opacity:0;
+    transform-box:fill-box;
+    transform-origin:center;
+  }
+  html.js .reveal.in .sample-point{
+    animation:dot-draw .5s cubic-bezier(.2,.8,.3,1) forwards;
+  }
+  @keyframes dot-draw{
+    from{opacity:0; transform:scale(.2);}
+    to{opacity:1; transform:scale(1);}
+  }
+</style>
+</head>
+<body>
+
+<header class="site-nav">
+  <div class="wrap">
+    <a href="#top" class="brand">
+      <svg viewBox="0 0 100 100" fill="none"><circle cx="50" cy="50" r="44" stroke="#334466" stroke-width="8"/><circle cx="50" cy="6" r="8" fill="#334466"/></svg>
+      MARCO BOLZONELLA
+    </a>
+    <button class="nav-toggle" aria-label="Apri menu" onclick="document.querySelector('nav.links').classList.toggle('open')">☰</button>
+    <nav class="links">
+      <a href="#about">About</a>
+      <a href="#research">Research</a>
+      <a href="#experience">Experience</a>
+      <a href="#education">Education</a>
+      <a href="#skills">Skills</a>
+      <a href="#publications">Publications</a>
+      <a href="#cv">CV</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<!-- ================= HERO ================= -->
+<section class="hero" id="top">
+  <div class="wrap">
+    <div>
+      <div class="hero-eyebrow">PhD Student in Statistics · KU Leuven</div>
+      <h1>Marco<br>Bolzonella<em>.</em></h1>
+      <p class="lede">Researching statistical modeling and inference for <strong>directional data</strong> — with a background in likelihood-based inference and non-standard asymptotic theory, combining theory with simulation and applied work in R and Python.</p>
+      <div class="cta-row">
+        <a class="btn btn-primary" href="mailto:bolzonellamarcoo@gmail.com">Get in touch ↗</a>
+        <a class="btn btn-ghost" href="https://www.linkedin.com/in/marco-bolzonella-778940234/" target="_blank" rel="noopener">LinkedIn ↗</a>
+      </div>
+    </div>
+
+    <div class="compass-wrap" aria-hidden="true">
+      <svg viewBox="0 0 420 420" fill="none">
+        <!-- wireframe di una sfera: motivo puramente geometrico, nessun dato o scala -->
+        <circle class="sph-outline" cx="210" cy="210" r="150"/>
+
+        <g class="sph-spin">
+          <!-- equatore -->
+          <ellipse class="sph-line strong" cx="210" cy="210" rx="150" ry="34"/>
+          <!-- meridiani -->
+          <ellipse class="sph-line" cx="210" cy="210" rx="60" ry="150"/>
+          <ellipse class="sph-line" cx="210" cy="210" rx="110" ry="150"/>
+          <ellipse class="sph-line" cx="210" cy="210" rx="150" ry="150"/>
+          <!-- paralleli -->
+          <ellipse class="sph-line" cx="210" cy="130" rx="118" ry="26"/>
+          <ellipse class="sph-line" cx="210" cy="290" rx="118" ry="26"/>
+
+          <circle cx="210" cy="60" r="5" fill="var(--azure)"/>
+        </g>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<!-- ================= ABOUT ================= -->
+<section class="about on-paper" id="about">
+  <div class="wrap">
+    <div class="eyebrow"><span>About</span><span class="rule"></span></div>
+  </div>
+  <div class="wrap" style="margin-top:-6px;">
+    <div class="about-photo reveal">
+      <div class="ring"></div>
+      <img src="marco.jpg" alt="Marco Bolzonella">
+      <p class="about-caption">Currently based in Leuven, Belgium. Home base: Mirano, Venice — Italy.</p>
+    </div>
+    <div class="about-body reveal">
+      <p>I am a PhD student in Statistics with a strong research interest in mathematical statistics, likelihood-based inference, and non-standard asymptotic theory. My work combines theoretical analysis with simulation studies, alongside the practical implementation of statistical methods in R and Python.</p>
+      <p>My path so far has moved between fields where directional and non-standard data appear naturally — from clustering astronomical data from the Gaia mission, to likelihood-based inference for particle physics within the ATLAS collaboration at Nikhef, to my current doctoral research on directional data at KU Leuven.</p>
+      <div class="fact-strip">
+        <div class="fact"><div class="num">2026</div><div class="lbl">PhD started</div></div>
+        <div class="fact"><div class="num">R · Py</div><div class="lbl">Core tools</div></div>
+        <div class="fact"><div class="num">IT · EN</div><div class="lbl">Languages</div></div>
+        <div class="fact"><div class="num">4</div><div class="lbl">Institutions — Padua, Munich, Nikhef, Leuven</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= RESEARCH ================= -->
+<section class="research" id="research">
+  <div class="wrap">
+    <div class="eyebrow on-navy"><span>Doctoral Research</span><span class="rule"></span></div>
+    <div class="research-grid">
+      <div class="reveal">
+        <p class="research-desc">Directional statistics deals with data recorded as angles or orientations rather than ordinary real numbers — directions, bearings, and points on a circle or sphere — which require their own probability models and inference tools rather than standard linear methods. My doctoral research develops statistical modeling and inference methods for this type of data.</p>
+      </div>
+      <div class="research-meta reveal">
+        <div class="meta-item">
+          <div class="k">Institution</div>
+          <div class="v">KU Leuven<small>Department of Mathematics</small></div>
+        </div>
+        <div class="meta-item">
+          <div class="k">Supervisors</div>
+          <div class="v">Prof. Irène Gijbels<br>Prof. Gerda Claeskens</div>
+        </div>
+        <div class="meta-item">
+          <div class="k">Since</div>
+          <div class="v">17 June 2026<small>Leuven, Belgium</small></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= EXPERIENCE ================= -->
+<section class="on-paper" id="experience">
+  <div class="wrap">
+    <div class="eyebrow"><span>Experience</span><span class="rule"></span></div>
+
+    <div class="timeline">
+      <div class="tl-item current reveal">
+        <div class="tl-date">June 2026 — Present</div>
+        <div class="tl-role">PhD Student</div>
+        <div class="tl-org">KU Leuven, Department of Mathematics — Leuven, Belgium</div>
+        <div class="tl-desc">Doctoral research on statistical modeling and inference for directional data, supervised by Prof. Irène Gijbels and Prof. Gerda Claeskens.</div>
+      </div>
+
+      <div class="tl-item reveal">
+        <div class="tl-date">September 2025 — February 2026</div>
+        <div class="tl-role">Master's Thesis — ATLAS Group</div>
+        <div class="tl-org">Nikhef, Amsterdam</div>
+        <div class="tl-desc">
+          Methodological research on likelihood-based statistical inference, with particular attention to non-standard settings and deviations from classical asymptotic results, in the context of SMEFT analyses within the ATLAS collaboration.
+          <ul>
+            <li>Developed theoretical results for likelihood-based inference in non-standard settings</li>
+            <li>Validated results through targeted simulation studies on the finite-sample behaviour of test statistics</li>
+            <li>Prepared one manuscript in statistical methodology and one physics-oriented manuscript related to the thesis project</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="tl-item reveal">
+        <div class="tl-date">September 2024 — September 2025</div>
+        <div class="tl-role">Research Assistant — Statistician</div>
+        <div class="tl-org">Department of Cardio-Thoraco-Vascular Sciences and Public Health, University of Padova</div>
+        <div class="tl-desc">
+          <ul>
+            <li>Statistical analyses for research projects in public health</li>
+            <li>Collaboration with multidisciplinary teams</li>
+            <li>Writing scientific reports and academic papers</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="tl-item reveal">
+        <div class="tl-date">August 2023 — November 2023</div>
+        <div class="tl-role">Bachelor's Thesis</div>
+        <div class="tl-org">University of Padua</div>
+        <div class="tl-desc">Methodological study on clustering methods based on multilayer neural networks, with a focus on model assessment and empirical validation. Analyzed the performance and limitations of clustering approaches through simulation and application to astronomical datasets from the Gaia mission.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= EDUCATION ================= -->
+<section class="on-paper" id="education" style="padding-top:0;">
+  <div class="wrap">
+    <div class="eyebrow"><span>Education</span><span class="rule"></span></div>
+
+    <div class="edu-grid reveal">
+      <div class="edu-item">
+        <div class="edu-date">2023 — 2026</div>
+        <div>
+          <div class="edu-title">MSc in Statistics</div>
+          <div class="edu-org">University of Padua, Italy</div>
+          <div class="edu-modules">Statistical Modeling · Statistical Inference · Data Analysis · Probability · Statistics for Particle Physics</div>
+        </div>
+      </div>
+      <div class="edu-item">
+        <div class="edu-date">2023</div>
+        <div>
+          <div class="edu-title">Exchange Semester</div>
+          <div class="edu-org">Ludwig Maximilian University of Munich, Germany</div>
+          <div class="edu-modules">Machine Learning · Regression for Correlated Data · Bayesian Statistics</div>
+        </div>
+      </div>
+      <div class="edu-item">
+        <div class="edu-date">2020 — 2023</div>
+        <div>
+          <div class="edu-title">BSc in Statistics</div>
+          <div class="edu-org">University of Padua, Italy</div>
+          <div class="edu-modules">Thesis: "Clustering with Multilayer Neural Networks: A Feasibility Analysis on Astronomical Data"</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= SKILLS ================= -->
+<section class="on-paper" id="skills">
+  <div class="wrap">
+    <div class="eyebrow"><span>Skills</span><span class="rule"></span></div>
+
+    <div class="skills-grid">
+      <div class="skills-col reveal">
+        <div class="eyebrow" style="margin-bottom:16px;"><span style="opacity:.5;">Technical &amp; Analytical</span></div>
+        <div class="tag-list">
+          <span class="tag">Likelihood-based statistical inference</span>
+          <span class="tag">Asymptotic theory &amp; non-regular inference</span>
+          <span class="tag">Constrained models &amp; boundary effects</span>
+          <span class="tag">Monte Carlo simulation</span>
+          <span class="tag">Statistical computing in R and Python</span>
+        </div>
+      </div>
+      <div class="skills-col reveal">
+        <div class="eyebrow" style="margin-bottom:16px;"><span style="opacity:.5;">Research &amp; Academic</span></div>
+        <div class="tag-list">
+          <span class="tag">Formulating research questions &amp; methodological problems</span>
+          <span class="tag">Critical evaluation of statistical assumptions and models</span>
+          <span class="tag">Scientific writing</span>
+          <span class="tag">Presentation of research results</span>
+          <span class="tag">Evidence synthesis &amp; literature review</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="lang-row reveal">
+      <div class="lang-item"><div class="l-name">Italian</div><div class="l-level">Native</div></div>
+      <div class="lang-item"><div class="l-name">English</div><div class="l-level">Advanced</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= PUBLICATIONS ================= -->
+<section class="on-paper" id="publications">
+  <div class="wrap">
+    <div class="eyebrow"><span>Publications</span><span class="rule"></span></div>
+
+    <div class="pub-card reveal">
+      <div class="pub-authors">Chiusaroli L., et al. (2026)</div>
+      <div class="pub-title">Outbreak of mucocutaneous Candida infections in newborns: clinical implications, investigation, and control measures.</div>
+      <div class="pub-journal">Antimicrobial Stewardship &amp; Healthcare Epidemiology</div>
+      <a class="pub-doi" href="https://doi.org/10.1017/ash.2025.10282" target="_blank" rel="noopener">doi.org/10.1017/ash.2025.10282 ↗</a>
+    </div>
+  </div>
+</section>
+
+<!-- ================= REFERENCES ================= -->
+<section class="on-paper" id="references" style="padding-top:0;">
+  <div class="wrap">
+    <div class="eyebrow"><span style="opacity:.5;">References</span><span class="rule"></span></div>
+    <div class="ref-grid reveal">
+      <div class="ref-card">
+        <div class="ref-name">Alessandra Rosalba Brazzale</div>
+        <div class="ref-role">Associate Professor, Supervisor — University of Padua</div>
+        <div class="ref-note">Contact details available on request</div>
+      </div>
+      <div class="ref-card">
+        <div class="ref-name">Lydia Brenner</div>
+        <div class="ref-role">Senior Researcher, Supervisor — Nikhef</div>
+        <div class="ref-note">Contact details available on request</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= CV ================= -->
+<section class="on-paper" id="cv" style="padding-top:0;">
+  <div class="wrap">
+    <div class="eyebrow"><span>Curriculum Vitae</span><span class="rule"></span></div>
+
+    <div class="cv-card reveal">
+      <div>
+        <div class="cv-card-title">CV — Marco Bolzonella</div>
+        <div class="cv-card-desc">Education, research experience, technical skills, and publications, in a single PDF.</div>
+      </div>
+      <a class="btn btn-outline" href="CV_Marco_Bolzonella.pdf" target="_blank" rel="noopener" download>Download PDF ↓</a>
+    </div>
+  </div>
+</section>
+
+<!-- ================= CONTACT / FOOTER ================= -->
+<footer class="contact" id="contact">
+  <div class="wrap">
+    <div class="eyebrow on-navy"><span>Contact</span><span class="rule"></span></div>
+    <div class="contact-inner">
+      <div>
+        <h2>Let's get<br>in touch.</h2>
+        <div class="contact-links">
+          <a href="mailto:bolzonellamarcoo@gmail.com"><span class="k">Email</span><span class="v">bolzonellamarcoo@gmail.com</span></a>
+          <a href="tel:+393400860527"><span class="k">Phone</span><span class="v">+39 340 0860527</span></a>
+          <a href="https://www.linkedin.com/in/marco-bolzonella-778940234/" target="_blank" rel="noopener"><span class="k">LinkedIn</span><span class="v">/in/marco-bolzonella</span></a>
+        </div>
+      </div>
+      <div class="contact-meta">
+        <div>LEUVEN, BELGIUM</div>
+        <div>HOME BASE — MIRANO (VENICE), IT</div>
+        <div>ITALIAN · ENGLISH</div>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>© 2026 Marco Bolzonella</span>
+      <span>KU Leuven — Department of Mathematics</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // segnala che il JS e' effettivamente partito: solo a questo punto l'animazione reveal si attiva (vedi CSS)
+  document.documentElement.classList.add('js');
+
+  // active nav link on scroll
+  const sections = document.querySelectorAll('section[id], header[id]');
+  const navLinks = document.querySelectorAll('nav.links a');
+  const byId = id => document.querySelector(`nav.links a[href="#${id}"]`);
+
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){
+        navLinks.forEach(a=>a.classList.remove('active'));
+        const link = byId(e.target.id);
+        if(link) link.classList.add('active');
+      }
+    });
+  }, {rootMargin:'-45% 0px -50% 0px'});
+  sections.forEach(s=>io.observe(s));
+
+  // close mobile nav on link click
+  document.querySelectorAll('nav.links a').forEach(a=>{
+    a.addEventListener('click', ()=> document.querySelector('nav.links').classList.remove('open'));
+  });
+
+  // reveal on scroll, con rete di sicurezza: se per qualsiasi motivo non scatta, il contenuto
+  // viene comunque reso visibile dopo poco (mai piu' testo bloccato a opacity:0 a tempo indeterminato)
+  const revealEls = document.querySelectorAll('.reveal');
+  if ('IntersectionObserver' in window) {
+    const revealIo = new IntersectionObserver((entries)=>{
+      entries.forEach(e=>{
+        if(e.isIntersecting){
+          e.target.classList.add('in');
+          revealIo.unobserve(e.target);
+        }
+      });
+    }, {threshold:0.15});
+    revealEls.forEach(el=>revealIo.observe(el));
+  } else {
+    revealEls.forEach(el=>el.classList.add('in'));
+  }
+  setTimeout(()=> revealEls.forEach(el=>el.classList.add('in')), 2500);
+</script>
+</body>
+</html>
